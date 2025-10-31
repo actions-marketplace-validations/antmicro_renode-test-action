@@ -79,14 +79,14 @@ runs:
       if: ${{ env.RENODE_ROOT == '' && steps.restore-cache.outputs.cache-hit != 'true' }}
     - name: Install dependencies (Linux)
       run: |
-        source ubuntu-dependencies
+        source $GITHUB_ACTION_PATH/ubuntu-dependencies
         sudo apt-get -qqy update
         sudo apt-get -y install --no-install-recommends ${RENODE_DEPENDENCIES[@]}
       shell: bash
       if: ${{ inputs.install-dependencies == 'yes' && env.RENODE_ROOT == '' && runner.os == 'Linux' }}
     - name: Verify dependencies (Linux)
       run: |
-        source ubuntu-dependencies
+        source $GITHUB_ACTION_PATH/ubuntu-dependencies
         fail=0
         for pkg in ${RENODE_DEPENDENCIES[@]}
         do

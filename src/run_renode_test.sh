@@ -31,7 +31,7 @@ else
     TEST_RESULT=$?
     if [ -z "$RENODE_NO_STEP_SUMMARY" ]
     then
-        ./src/results.py $ARTIFACTS_PATH/robot_output.xml $PWD >> $GITHUB_STEP_SUMMARY
+        $GITHUB_ACTION_PATH/src/results.py $ARTIFACTS_PATH/robot_output.xml $PWD >> $GITHUB_STEP_SUMMARY
     fi
 fi
 

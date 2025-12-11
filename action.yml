@@ -124,7 +124,7 @@ runs:
         key: renode-${{ runner.os }}-${{ runner.arch }}-${{ steps.get-renode-rev.outputs.renode-rev }}-${{ steps.get-renode-rev.outputs.action-hash-key }}
       if: ${{ env.RENODE_ROOT == '' && steps.restore-cache.outputs.cache-hit != 'true' }}
     - name: Install Robot framework dependencies
-      run: python3 -m pip install -r tests/requirements.txt
+      run: python3 -m pip install -r tests/requirements.txt --break-system-packages
       shell: bash
       working-directory: ${{ github.workspace }}/renode-${{ steps.get-renode-rev.outputs.renode-rev }}
       if: ${{ env.RENODE_ROOT == '' }}

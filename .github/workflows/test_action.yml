@@ -18,7 +18,7 @@ jobs:
   test:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-15-intel]
+        os: [ubuntu-latest, ubuntu-22.04, windows-latest, macos-15-intel]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -52,7 +52,7 @@ jobs:
       - name: Upload results with metrics
         uses: actions/upload-artifact@v4
         with:
-          name: metrics-${{ runner.os }}-${{ github.run_id }}
+          name: metrics-${{ matrix.os }}-${{ github.run_id }}
           path: metrics/*
 
       - name: Verify that renode-test also works under CMD/PowerShell on Windows

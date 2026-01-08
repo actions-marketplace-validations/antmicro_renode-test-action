@@ -56,7 +56,9 @@ jobs:
           path: metrics/*
 
       - name: Verify that renode-test also works under CMD/PowerShell on Windows
-        run: renode-test __tests__/hello_world.robot
+        run: |
+          %RENODE_ROOT%/.venv/Scripts/activate.bat 
+          renode-test __tests__/hello_world.robot
         shell: cmd
         if: ${{ runner.os == 'Windows' }}
 

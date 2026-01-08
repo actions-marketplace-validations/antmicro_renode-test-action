@@ -23,6 +23,12 @@ echo "::add-matcher::$GITHUB_ACTION_PATH/src/renode-problem-matcher.json"
 
 TEST_RESULT=0
 
+if [[ "$RUNNER_OS" == "Windows" ]]; then
+  source $RENODE_ROOT/.venv/Scripts/activate
+else
+  source $RENODE_ROOT/.venv/bin/activate
+fi
+
 if [ -z "$TESTS_TO_RUN" ]
 then
     echo "No tests provided, renode installed to $RENODE_ROOT"
@@ -47,15 +53,7 @@ then
     METRICS_ARTIFACTS="$ARTIFACTS_PATH/metrics-visualizations"
     mkdir -p $METRICS_ARTIFACTS
 
-    # Install required packages to virtualenv (if needed)
-    VENV_DIR="$RENODE_ROOT/metrics-venv"
-    if [ ! -d "$VENV_DIR" ]; then
-        python -m venv "$VENV_DIR"
-        source $VENV_DIR/bin/activate
-        pip install -r "$METRICS_ANALYZER_DIR/metrics_visualizer/requirements.txt"
-    else
-        source $VENV_DIR/bin/activate
-    fi
+    uv pip install -r "$METRICS_ANALYZER_DIR/metrics_visualizer/requirements.txt"
 
     # Generate visualisation from profiler output
     for fpath in $ARTIFACTS_PATH/profiler-*
@@ -63,7 +61,7 @@ then
         fname=$(basename $fpath)
         METRICS_OUTPUT="$METRICS_ARTIFACTS/$fname"
         mkdir $METRICS_OUTPUT
-        $METRICS_VISUALIZER --no-dialogs -o $METRICS_OUTPUT $fpath
+        uv run $METRICS_VISUALIZER --no-dialogs -o $METRICS_OUTPUT $fpath
     done
 
     # Deactivate virtualenv
